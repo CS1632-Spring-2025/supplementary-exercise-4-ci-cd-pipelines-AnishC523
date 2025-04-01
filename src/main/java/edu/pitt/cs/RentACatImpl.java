@@ -1,5 +1,7 @@
 package edu.pitt.cs;
 
+import static org.mockito.Mockito.inOrder;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,6 +21,21 @@ public class RentACatImpl implements RentACat {
 
 	public boolean returnCat(int id) {
 		// TODO: Fill in
+		for (Cat cat: cats)
+        {
+			if (cat.getId() == id && cat.getRented())
+			{
+				cat.returnCat();
+				System.out.println("Welcome back, " + cat.getName() + "!");
+				return true;
+			}
+			else if (cat.getId() == id && !cat.getRented()) 
+			{
+				System.out.println(cat.getName() + " is already here!");
+				return false;
+			}
+		}
+		System.out.println("Invalid cat ID.");
 		return false;
 	}
 
@@ -34,6 +51,21 @@ public class RentACatImpl implements RentACat {
 
 	public boolean rentCat(int id) {
 		// TODO: Fill in
+		for (Cat cat : cats) 
+		{
+            if (cat.getId() == id && !cat.getRented()) 
+			{
+                cat.rentCat();
+                System.out.println(cat.getName() + " has been rented.");
+                return true;
+            }
+			else if (cat.getId() == id && cat.getRented()) 
+			{
+				System.out.println("Sorry, " + cat.getName() + " is not here!");
+				return false;
+			}
+        }
+		System.out.println("Invalid cat ID.");
 		return false;
 	}
 
@@ -46,9 +78,20 @@ public class RentACatImpl implements RentACat {
 	 * @return true if cat exists, false otherwise
 	 */
 
-	public boolean renameCat(int id, String name) {
+	public boolean renameCat(int id, String name) 
+	{
 		// TODO: Fill in
-		return false;
+		for (Cat cat : cats) 
+		{
+            if (cat.getId() == id) 
+			{
+                cat.renameCat(name);
+                System.out.println("Hello, " + cat.getName());
+                return true;
+            }
+        }
+        System.out.println("Invalid cat ID.");
+        return false;
 	}
 
 	/**
@@ -63,7 +106,15 @@ public class RentACatImpl implements RentACat {
 
 	public String listCats() {
 		// TODO: Fill in
-		return "WRITE CODE FOR THIS";
+		StringBuilder list = new StringBuilder();
+        for (Cat cat : cats) 
+		{
+            if (!cat.getRented()) 
+			{
+                list.append(cat.toString() + "\n");
+            }
+        }
+        return list.toString();
 	}
 
 	/**
